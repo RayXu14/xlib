@@ -2,14 +2,14 @@ import logging
 import os
 
 
-def check_output_dir(path):
-    if os.path.exists(path) and os.listdir(path):
-        input("Output directory () already exists and is not empty. Continue? >")
+def check_output_dir(path, override=False):
+    if os.path.exists(path) and os.listdir(path) and not override:
+        input("Output directory () already exists and is not empty. Will cover it. Continue? >")
     if not os.path.exists(path):
         os.makedirs(path)
 
     
-def set_logger():
+def set_logger(logname='xlib.log'):
     """ 受启发修改：https://blog.csdn.net/u010895119/article/details/79470443 """
     logger = logging.getLogger()
     logger.setLevel('INFO')
@@ -22,7 +22,7 @@ def set_logger():
     chlr.setFormatter(formatter)
     chlr.setLevel('DEBUG')  # 也可以不设置，不设置就默认用logger的level
 
-    fhlr = logging.FileHandler(output_dir + '.log', mode='w') # 输出到文件的handler
+    fhlr = logging.FileHandler(logname, mode='w') # 输出到文件的handler
     fhlr.setFormatter(formatter)
     fhlr.setLevel('INFO')
 
