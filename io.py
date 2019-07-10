@@ -3,6 +3,8 @@ import os
 
 
 def check_output_dir(path, override=False):
+    """ VERIFIED
+    """
     if os.path.exists(path) and os.listdir(path) and not override:
         input("Output directory () already exists and is not empty. Will cover it. Continue? >")
     if not os.path.exists(path):
@@ -10,7 +12,9 @@ def check_output_dir(path, override=False):
 
     
 def set_logger(logname='xlib.log'):
-    """ 受启发修改：https://blog.csdn.net/u010895119/article/details/79470443 """
+    """ VERIFIED
+    受启发修改：https://blog.csdn.net/u010895119/article/details/79470443
+    """
     logger = logging.getLogger()
     logger.setLevel('INFO')
 
@@ -29,3 +33,32 @@ def set_logger(logname='xlib.log'):
     logger.addHandler(chlr)
     logger.addHandler(fhlr)
     return logger
+
+
+class Config(dict):
+    """ VERIFIED
+    同时支持用self[""]和self.访问
+    """
+    def __init__(self, print=print, **kwargs):
+        super().__init__(**kwargs)
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+        if print is not None:
+            print(self)
+    
+    def set(self, key, val):
+        self[key] = val
+        setattr(self, key, val)
+        
+        
+def shuffle_2array_together(x, y, inplace=True):
+    """ VERIFIED
+    将两个数组以同样的顺序shuffle
+    """
+    combined = list(zip(x, y))
+    random.shuffle(combined)
+    if inplace:
+        x[:], y[:] = zip(*combined)
+    else:
+        x, y = zip(*combined)
+    return x, y
