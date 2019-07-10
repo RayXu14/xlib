@@ -17,6 +17,9 @@ def seed_everything(seed=303, print=print):
     print('Everything seeded.')
     
 def print_grad_params(model, print=print):
+    """
+    需要进一步拓展
+    """
     for name, param in model.named_parameters():
         if param.requires_grad:
             print(name)
