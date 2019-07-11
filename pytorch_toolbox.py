@@ -4,8 +4,8 @@ import numpy as np
 import torch
         
 
-def seed_everything(seed=303, print=print):
-    """
+def seed_everything(seed=205, print=print):
+    """ VARIFIED by Kaggle
     受启发修改：https://www.kaggle.com/duykhanh99/lstm-fast-ai-tuning
     """
     random.seed(seed)
@@ -15,6 +15,7 @@ def seed_everything(seed=303, print=print):
     torch.cuda.manual_seed(seed)
     torch.backends.cudnn.deterministic = True
     print('Everything seeded.')
+
     
 def print_grad_params(model, print=print):
     """
