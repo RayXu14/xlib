@@ -1,9 +1,11 @@
 def find_proper_lr(learner):
+    """VERIFIED by kaggle, result improved
+    """
     learner.lr_find()
     learner.recorder.plot(suggestion=True)
 
 def show_all(learner, print=print):
-    """
+    """VERIFIED by kaggle
     显示learner在训练后的所有情况
     """
     learner.plot_metrics()
