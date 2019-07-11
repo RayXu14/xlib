@@ -2,7 +2,7 @@ def find_proper_lr(learner)
     learner.lr_find()
     learner.recorder.plot(suggestion=True)
 
-def show_all(learner):
+def show_all(learner, print=print):
     """
     显示learner在训练后的所有情况
     """
