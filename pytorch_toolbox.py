@@ -18,12 +18,18 @@ def seed_everything(seed=303, print=print):
     
 def print_grad_params(model, print=print):
     """
-    需要进一步拓展
     """
     for name, param in model.named_parameters():
         if param.requires_grad:
             print(name)
-            
+
+    
+def visualize_model(model, print=print):
+    """
+    需要进一步拓展
+    """
+    print(model)
+    print_grad_params(model, print=print)           
             
 def has_nan(x: torch.Tensor, quit_if_nan=True, print=print):
     result = torch.isnan(x).detach().cpu().numpy().sum() == 0
