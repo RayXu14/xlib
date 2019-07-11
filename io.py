@@ -36,7 +36,7 @@ def set_logger(logname='xlib.log'):
 
 
 class Config(dict):
-    """ VERIFIED
+    """ VERIFIED by Kaggle
     同时支持用self[""]和self.访问
     """
     def __init__(self, print=print, **kwargs):
