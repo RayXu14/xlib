@@ -1,4 +1,4 @@
-def find_proper_lr(learner)
+def find_proper_lr(learner):
     learner.lr_find()
     learner.recorder.plot(suggestion=True)
 
