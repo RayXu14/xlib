@@ -1,6 +1,6 @@
 def find_proper_lr(learner):
     """VERIFIED by kaggle, result dropped
-    find_lr似乎会影响结果
+    find_lr似乎会影响结果，但在种子确定的情况下，find_lr后的结果也确定
     """
     learner.lr_find()
     learner.recorder.plot(suggestion=True)
