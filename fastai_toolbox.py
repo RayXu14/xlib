@@ -1,13 +1,13 @@
 def find_proper_lr(learner):
-    """VERIFIED by kaggle, result improved
+    """VERIFIED by kaggle, result dropped
+    find_lr似乎会影响结果
     """
     learner.lr_find()
     learner.recorder.plot(suggestion=True)
     
     
 def show_all(learner, print=print):
-    """VERIFIED by kaggle, result dropped, why? may be deviation
-    显示learner在训练后的所有情况
+    """VERIFIED by kaggle
     """
     if len(learner.metrics) > 0:
         learner.recorder.plot_metrics()
