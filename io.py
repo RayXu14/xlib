@@ -1,15 +1,16 @@
 import logging
 import os
+import subprocess
 
 
 def check_output_dir(path, override=False):
     """ VERIFIED
     """
     if os.path.exists(path) and os.listdir(path) and not override:
-        input("Output directory () already exists and is not empty. Will cover it. Continue? >")
+        input(f"Output directory [{path}] already exists and is not empty. Will cover it. Continue? >")
     if not os.path.exists(path):
         os.makedirs(path)
-
+        
     
 def set_logger(logname='xlib.log'):
     """ VERIFIED
@@ -26,7 +27,7 @@ def set_logger(logname='xlib.log'):
     chlr.setFormatter(formatter)
     chlr.setLevel('DEBUG')  # 也可以不设置，不设置就默认用logger的level
 
-    fhlr = logging.FileHandler(logname, mode='w') # 输出到文件的handler
+    fhlr = logging.FileHandler(logname, mode='w', encoding='utf-8') # 输出到文件的handler
     fhlr.setFormatter(formatter)
     fhlr.setLevel('INFO')
 
@@ -39,16 +40,17 @@ class Config(dict):
     """ VERIFIED by Kaggle
     同时支持用self[""]和self.访问
     """
-    def __init__(self, print=print, **kwargs):
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
         for k, v in kwargs.items():
             setattr(self, k, v)
-        if print is not None:
-            print(self)
     
     def set(self, key, val):
         self[key] = val
         setattr(self, key, val)
+        
+    def show(self, print=print):
+        print(self)
         
         
 def shuffle_2array_together(x, y, inplace=True):
@@ -62,3 +64,10 @@ def shuffle_2array_together(x, y, inplace=True):
     else:
         x, y = zip(*combined)
     return x, y
+
+
+def log_gpu_info(print=print):
+    """
+    https://zhuanfou.com/ask/77800004_063?answer_id=77800023_1052
+    """
+    print(os.popen('nvidia-smi').read())

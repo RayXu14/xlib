@@ -2,6 +2,7 @@ import os
 import random
 import numpy as np
 import torch
+from thop import profile
         
 
 def seed_everything(seed=205, print=print):
@@ -14,15 +15,14 @@ def seed_everything(seed=205, print=print):
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
     torch.backends.cudnn.deterministic = True
-    print('Everything seeded.')
+    print(f'Everything seeded as seed = {seed}.')
 
     
 def print_grad_params(model, print=print):
     """
     """
     for name, param in model.named_parameters():
-        if param.requires_grad:
-            print(name)
+        print(f'requires_grad={param.requires_grad}: {name}')
 
     
 def visualize_model(model, print=print):
@@ -31,7 +31,8 @@ def visualize_model(model, print=print):
     """
     print(model)
     print_grad_params(model, print=print)           
-            
+
+
 def has_nan(x: torch.Tensor, quit_if_nan=True, print=print):
     result = torch.isnan(x).detach().cpu().numpy().sum() == 0
     if quit_if_nan:
@@ -40,11 +41,10 @@ def has_nan(x: torch.Tensor, quit_if_nan=True, print=print):
         if result:
             print(f'DANGER! {x.name} has nan')
 
-            
-def count_params(model, sample_input, print=print):
-    """
-    统计模型的参数量和计算量
-    """
-    from thop import profile
-    flops, params = profile(model, input=(sample_input, ))
-    print(f'FLOPS = {flops} PARAMS = {params}')
+    
+def gpu2np(tensor):
+    return tensor.detach().cpu().numpy()
+
+
+def gpu2list(tensor):
+    return gpu2np(tensor).tolist()
