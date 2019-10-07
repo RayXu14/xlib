@@ -1,6 +1,5 @@
 import logging
 import os
-import subprocess
 
 
 def check_output_dir(path, override=False):
