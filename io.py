@@ -1,13 +1,19 @@
 import logging
 import os
-import subprocess
+from pathlib import Path
 
 
-def check_output_dir(path, override=False):
+def check_output_dir(path: Path):
     """ VERIFIED
     """
-    if os.path.exists(path) and os.listdir(path) and not override:
+    if os.path.exists(path) and os.listdir(path):
         input(f"Output directory [{path}] already exists and is not empty. Will cover it. Continue? >")
+        for p in os.listdir(path):
+            print(f'remove {path / p}')
+            try:
+                os.remove(path / p)
+            except:
+                pass
     if not os.path.exists(path):
         os.makedirs(path)
         
