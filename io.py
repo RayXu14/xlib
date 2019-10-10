@@ -1,9 +1,6 @@
 import logging
 import os
-<<<<<<< HEAD
 from pathlib import Path
-=======
->>>>>>> 01c21e98aa24407d99c06830d7790baa3f6bcfe6
 
 
 def check_output_dir(path: Path):
@@ -12,10 +9,12 @@ def check_output_dir(path: Path):
     if os.path.exists(path) and os.listdir(path):
         input(f"Output directory [{path}] already exists and is not empty. Will cover it. Continue? >")
         for p in os.listdir(path):
-            print(f'remove {path / p}')
             try:
+                print(f'removing {path / p}')
                 os.remove(path / p)
+                print('success')
             except:
+                print('fail')
                 pass
     if not os.path.exists(path):
         os.makedirs(path)
