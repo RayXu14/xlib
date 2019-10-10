@@ -2,7 +2,6 @@ import os
 import random
 import numpy as np
 import torch
-from thop import profile
         
 
 def seed_everything(seed=205, print=print):
