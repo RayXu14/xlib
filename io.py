@@ -2,7 +2,7 @@ import logging
 import os
 from pathlib import Path
 
-
+# 应该弃用Path
 def check_output_dir(path: Path):
     """ VERIFIED
     """
