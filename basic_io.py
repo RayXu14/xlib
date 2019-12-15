@@ -1,17 +1,19 @@
 import logging
 import os
 from pathlib import Path
+from functools import partial
 
-# 应该弃用Path
-def check_output_dir(path: Path):
+open_utf8 = partial(open, encoding='utf-8')
+
+def check_output_dir(path: str):
     """ VERIFIED
     """
     if os.path.exists(path) and os.listdir(path):
         input(f"Output directory [{path}] already exists and is not empty. Will cover it. Continue? >")
         for p in os.listdir(path):
             try:
-                print(f'removing {path / p}')
-                os.remove(path / p)
+                print(f'removing {path}/{p}')
+                os.remove(f'{path}/{p}')
                 print('success')
             except:
                 print('fail')
@@ -59,19 +61,6 @@ class Config(dict):
         
     def show(self, print=print):
         print(self)
-        
-        
-def shuffle_2array_together(x, y, inplace=True):
-    """ VERIFIED
-    将两个数组以同样的顺序shuffle
-    """
-    combined = list(zip(x, y))
-    random.shuffle(combined)
-    if inplace:
-        x[:], y[:] = zip(*combined)
-    else:
-        x, y = zip(*combined)
-    return x, y
 
 
 def log_gpu_info(print=print):
