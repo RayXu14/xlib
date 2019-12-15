@@ -1,5 +1,9 @@
-from tqdm import tqdm
 import random
+import pickle as pkl
+
+from tqdm import tqdm
+
+from basic_io import open_utf8
         
         
 def shuffle_2array_together(x, y, inplace=True):
@@ -25,7 +29,7 @@ def calc_avg_tokens(*args):
     lens = []
     for arg in args:
         if type(arg) = str:  # path
-            with open(path, encoding='utf-8') as f:
+            with open_utf8(path) as f:
                 for utt in tqdm(zip(fs, ft)):
                     words = utt.strip().split()
                     lens.append(len(words))
@@ -41,3 +45,62 @@ def calc_avg_tokens(*args):
         else:
             assert False, 'Unknown type'
     print(f'avg_utt_len = {avg(lens)}')
+    
+
+def load_pkl(path):
+    with open(path, 'rb') as f:
+        content = pkl.load(f)
+    print(f'Loaded from {path}')
+
+
+def overview_list(lst, name='list', n=3):
+    print(f'{name} has {len(lst)} elements')
+    if n > 0:
+        print(f'Head {n} examples')
+        print(lst[:n])
+        print(f'Tail {n} examples')
+        print(lst[-n:])
+        
+
+def dump_pkl(path, content):
+    with open(path, 'wb') as f:
+        pkl.dump(content, f)
+        
+
+def uttListFile2wordsListFile(origin_path: str, method, output_path=None):
+    output_path = origin_path + '.tok' if output_path is None else output_path
+    with open_utf8(origin_path) as f, open_utf8(output_path, 'w') as ftok:
+        for line in tqdm(f):
+            words = method(line)
+            ftok.write(' '.join(words) + '\n')
+        
+
+def uttList2wordsList(utts: list, method):
+    wordsList = [' '.join(method(utt)) + '\n' for utt in utts]
+    return wordsList
+            
+            
+def load_nagisa():
+    import nagisa
+
+
+def nagisa_cut(utt: str):
+    utt = utt.strip()
+    words = nagisa.tagging(utt)
+    return words.words
+            
+    
+nlp = None
+def load_spacy(model='en_core_news_sm'):
+    '''
+    https://spacy.io/models
+    '''
+    import spacy
+    global nlp
+    nlp = spacy.load("en_core_web_sm")
+
+
+def spacy_cut(utt: str):
+    utt = utt.strip()
+    words = [w.text for w in nlp(utt.strip())]
+    return words

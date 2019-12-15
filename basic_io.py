@@ -3,6 +3,9 @@ import logging
 import os
 from pathlib import Path
 from functools import partial
+import warnings
+
+from lxml import etree
 
 open_utf8 = partial(open, encoding='utf-8')
 
@@ -12,15 +15,18 @@ class Redirect:
     '''
     def __init__(self, target, path='default.log'):
         self.terminal = target
-        self.log = open(path, 'a')
+        self.log = open_utf8(path, 'a')
+        
     def write(self, message):
         self.terminal.write(message)
         self.log.write(message)
+        
     def flush(self):
         pass
     
 
 def redirect_std(path: str):
+    print('Redirecting STDOUT and STDERR')
     sys.stdout = Redirect(sys.stdout, path + '.out')
     sys.stderr = Redirect(sys.stderr, path + '.err')
     
@@ -93,3 +99,16 @@ def log_gpu_info(print=print):
     https://zhuanfou.com/ask/77800004_063?answer_id=77800023_1052
     """
     print(os.popen('nvidia-smi').read())
+
+    
+def get_xml_root(path, recover=False):
+    parser = etree.XMLParser(recover=recover)
+    tree = etree.parse(path, parser)
+    root = tree.getroot()
+    return root
+    # root.getchildren()可获得子节点列表
+    # node.text可获得节点正文内容
+    
+
+def ignore_warnings():
+    warnings.filterwarnings('ignore')

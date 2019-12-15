@@ -1,0 +1,1 @@
+docker run --runtime=nvidia -it --rm --cpuset-cpus 0-31 -p 1104:8888 -p 9000:9000 -p 9001:9001 -p 9002:9002 -p 9003:9003 -p 9004:9004 -p 9005:9005 -p 9006:9006 -p 9007:9007 -v $HOME/reserved/.torch:/root/.torch   -v $HOME/multi-lingual-dialog:/workspace frontlibrary/pytorch:official-1.2-cuda10.0-cudnn7-devel-tensorboard-nodejs
