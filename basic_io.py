@@ -1,9 +1,29 @@
+import sys
 import logging
 import os
 from pathlib import Path
 from functools import partial
 
 open_utf8 = partial(open, encoding='utf-8')
+
+class Redirect:
+    '''
+    受启发修改：https://i.loli.net/2017/09/06/59b00aa83fb78.png
+    '''
+    def __init__(self, target, path='default.log'):
+        self.terminal = target
+        self.log = open(path, 'a')
+    def write(self, message):
+        self.terminal.write(message)
+        self.log.write(message)
+    def flush(self):
+        pass
+    
+
+def redirect_std(path: str):
+    sys.stdout = Redirect(sys.stdout, path + '.out')
+    sys.stderr = Redirect(sys.stderr, path + '.err')
+    
 
 def check_output_dir(path: str):
     """ VERIFIED
@@ -20,6 +40,11 @@ def check_output_dir(path: str):
                 pass
     if not os.path.exists(path):
         os.makedirs(path)
+
+
+def check_output_dirs(paths):
+    for path in paths:
+        check_output_dir(path)
         
     
 def set_logger(logname='xlib.log'):
