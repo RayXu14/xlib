@@ -6,7 +6,11 @@ import sys
 from tqdm import tqdm
 
 from basic_io import open_utf8
-        
+
+sentence_begin_tag = '<bos>'        
+sentence_end_tag = '<eos>'        
+unknown_word_tag = '<unk>'        
+sentence_pad_tag = '<pad>'        
         
 def shuffle_2array_together(x, y, inplace=True):
     """ VERIFIED
@@ -111,10 +115,10 @@ def overview_list(lst, name='list', n=3):
 def init_simple_vocab(include_stctag=True):
     counter = Counter()
     if include_stctag:
-        counter['<bos>'] = sys.maxsize
-        counter['<eos>'] = sys.maxsize
-    counter['<pad>'] = sys.maxsize
-    counter['<unk>'] = sys.maxsize
+        counter[sentence_begin_tag] = sys.maxsize
+        counter[sentence_end_tag] = sys.maxsize
+    counter[sentence_pad_tag] = sys.maxsize
+    counter[unknown_word_tag] = sys.maxsize
     return counter
 
 
@@ -150,5 +154,14 @@ def counter2vocab(counter, max_vocab=None):
         vocab.append(word)
     return vocab
     
-    
-    
+
+def ids2words(ids, i2w):
+    words = []
+    for idx in ids:
+        word = i2w[idx]
+        if word == sentence_begin_tag:
+            continue
+        if word == sentence_end_tag:
+            break
+        words.append(word)
+    return words
